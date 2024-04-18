@@ -72,6 +72,9 @@ class House {
     }
 
     public function display() {
+
+        list($discount, $discountedPrice) = $this->calculateDiscount();
+
         echo '<div class="max-w-sm w-full py-6 px-3">
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
           <div class="bg-cover bg-center h-56 p-4" style="background-image: url(' . $this->image . ')">
@@ -82,9 +85,16 @@ class House {
             </div>
           </div>
           <div class="p-4">
-            <p class="uppercase tracking-wide text-sm font-bold text-gray-700">' . $this->name . ' • ' . $this->description . '</p>
-            <p class="text-3xl text-gray-900">' . $this->price . '</p>
-            <p class="text-gray-700">' . $this->address . '</p>
+            <p class="uppercase tracking-wide text-sm font-bold text-gray-700">' . $this->name . ' • ' . $this->description . '</p>';
+
+        if ($discount > 0) {
+            echo '<p class="text-xl text-gray-900"><span class="line-through">$' . $this->price . '</span> 
+            <span class="text-red-600 font-bold text-3xl">$' . $discountedPrice . '</span></p>';
+        } else {
+            echo '<p class="text-3xl text-gray-900">$' . $this->price . '</p>';
+        }
+
+        echo '<p class="text-gray-700">' . $this->address . '</p>
           </div>
           <div class="flex p-4 border-t border-gray-300 text-gray-700">
             <div class="flex-1 inline-flex items-center">
@@ -114,6 +124,21 @@ class House {
         </div>
       </div>';
     }
+
+    private function calculateDiscount() {
+        // Випадково визначаємо, чи буде знижка
+        $hasDiscount = rand(0, 1);
+        if ($hasDiscount) {
+            // Випадково визначаємо розмір знижки (від 0% до 30%)
+            $discountPercent = rand(0, 30);
+            // Розраховуємо знижену ціну
+            $discountedPrice = $this->price - ($this->price * $discountPercent / 100);
+            return [$discountPercent, $discountedPrice];
+        } else {
+            // Якщо знижки немає, повертаємо 0%
+            return [0, 0];
+        }
+    }
 }
 
 // Створюємо масив об'єктів класу House
@@ -122,7 +147,7 @@ $houses = [
         "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
         "Detached house",
         "5y old",
-        "$350000",
+        350000,
         "742 Evergreen Terrace",
         "Tiffany Heffner",
         "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
@@ -134,7 +159,7 @@ $houses = [
         "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
         "Detached house",
         "5y old",
-        "$350000",
+        350000,
         "742 Evergreen Terrace",
         "Tiffany Heffner",
         "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
@@ -146,7 +171,7 @@ $houses = [
         "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
         "Detached house",
         "5y old",
-        "$350000",
+        350000,
         "742 Evergreen Terrace",
         "Tiffany Heffner",
         "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
