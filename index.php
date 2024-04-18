@@ -236,6 +236,8 @@ function generateAboutSection() {
 echo generateAboutSection();
 ?>
 <!--end  About selection -->
+
+<!-- start Form selection -->
   <section class="bg-white -mt-12 py-16">
     <h1 class="text-center uppercase text-black text-4xl font-bold  leading-none tracking-normal">
       Contact Me
@@ -274,13 +276,19 @@ echo generateAboutSection();
       </div>
     </form>
   </section>
+<!-- end Form selection -->
+
+<!-- start Bottom selection -->
+<?php
+$location = "Metropolitan City of Bari, 70121, Italy";
+?>
+
   <section class="bg-gray-800 -mt-12 py-16">
     <div class="flex flex-col md:flex-row text-white text-center">
-      <div class="p-6 md:w-1/3">
-        <h1 class="uppercase text-2xl font-bold leading-none tracking-normal pb-5">Location</h1>
-        <p>Metropolitan City of Bari,<br>
-          70121, Italy</p>
-      </div>
+    <div class="p-6 md:w-1/3">
+      <h1 class="uppercase text-2xl font-bold leading-none tracking-normal pb-5">Location</h1>
+      <p><?php echo $location; ?></p>
+    </div>
       <div class="p-6 md:w-1/3">
         <h1 class="uppercase text-2xl font-bold  leading-none tracking-normal">Around the web</h1>
         <div class="flex justify-center py-5 ">
@@ -315,9 +323,12 @@ echo generateAboutSection();
       </div>
     </div>
   </section>
+<!-- end Bottom selection -->
 </main>
+
 <footer class="bg-gray-900 h-16">
   <p class="pt-5 text-center text-white">Copyright © Your Website <?php echo date("Y"); ?></p>
 </footer>
+
 </body>
 </html>
