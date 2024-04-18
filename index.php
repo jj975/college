@@ -261,7 +261,10 @@ echo generateAboutSection();
 <!--end  About selection -->
 
 <!-- start Form selection -->
-  <section class="bg-white -mt-12 py-16">
+
+
+
+<section class="bg-white -mt-12 py-16">
     <h1 class="text-center uppercase text-black text-4xl font-bold  leading-none tracking-normal">
       Contact Me
     </h1>
@@ -273,10 +276,33 @@ echo generateAboutSection();
       </svg>
       <span class="h-1 w-24 bg-black rounded-full mx-2"></span>
     </div>
-   
-    <?php
+    <form class="px-6 pb-12 max-w-2xl mx-auto" method="post">
+      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+        <input name="name" class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
+               type="text" placeholder="Name" aria-label="Name">
+      </div>
+      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+        <input name="email" class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
+               type="email" placeholder="Email Address" aria-label="Email Address">
+      </div>
+      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+        <input name="phoneNumber" class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
+               type="text" placeholder="Phone Number" aria-label="Phone Number">
+      </div>
+      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+        <label>
+                    <textarea name="message"
+                      class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
+                      rows="5" placeholder="Message"></textarea>
+        </label>
 
-    class ContactInformation {
+      </div>
+      <div class="py-5">
+        <button type="submit" class="bg-green-500 px-8 py-5 rounded-lg text-white">Send</button>
+      </div>
+<?php
+// Клас ContactInformation
+class ContactInformation {
     public $name;
     public $email;
     public $phoneNumber;
@@ -289,33 +315,37 @@ echo generateAboutSection();
         $this->message = $message;
     }
 }
-    ?>
-    <form class="px-6 pb-12 max-w-2xl mx-auto">
-      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
-        <input class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-               type="text" placeholder="Name" aria-label="Name">
-      </div>
-      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
-        <input class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-               type="text" placeholder="Email Address" aria-label="Email Address">
-      </div>
-      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
-        <input class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-               type="text" placeholder="Phone Number" aria-label="Phone Number">
-      </div>
-      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
-        <label>
-                    <textarea
-                      class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-                      rows="5" placeholder="Message"></textarea>
-        </label>
 
-      </div>
-      <div class="py-5">
-        <button class="bg-green-500 px-8 py-5 rounded-lg text-white">Send</button>
-      </div>
+// Обробка форми
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Отримання даних з форми
+    $name = $_POST['name'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phoneNumber = $_POST['phoneNumber'] ?? '';
+    $message = $_POST['message'] ?? '';
+
+    // Перевірка чи всі поля були заповнені
+    if (!empty($name) && !empty($email) && !empty($phoneNumber) && !empty($message)) {
+        // Створення нового об'єкту класу ContactInformation
+        $contactInfo = new ContactInformation($name, $email, $phoneNumber, $message);
+
+        // Виведення об'єкту нижче форми
+        echo '<pre>
+            <div class="flex items-center border-b border-b-2 border-gray-400 py-10">';
+        print_r($contactInfo);
+        echo '</pre>
+        </div>';
+    } else {
+        echo '
+        <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+            <label class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none">Please fill in all fields.</label>
+
+        </div>';
+    }
+}
+?>
     </form>
-  </section>
+</section>
 <!-- end Form selection -->
 
 <!-- start Bottom selection -->
