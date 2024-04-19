@@ -144,30 +144,49 @@ class House {
     }
 }
 
-function generateHouses($numHouses) {
-    $houses = [];
-    for ($i = 0; $i < $numHouses; $i++) {
-        // Генеруємо випадкові дані для будинку
-        $image = "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80";
-        $name = "Detached House" . ($i + 1);
-        $description = rand(1, 10) . "y old";
-        $price = rand(100000, 500000);
-        $address = rand(1, 1000) . " Evergreen Terrace";
-        $realtorName = "Tiffany Heffner";
-        $realtorImage = "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80";
-        $realtorPhone = "(555) " . rand(100, 999) . "-5555";
-        $bedrooms = rand(1, 5);
-        $bathrooms = rand(1, 3);
-        
-        // Створюємо новий об'єкт будинку і додаємо його до масиву
-        $house = new House($image, $name, $description, $price, $address, $realtorName, $realtorImage, $realtorPhone, $bedrooms, $bathrooms);
-        $houses[] = $house;
+function getHousesFromDatabase($numHouses) {
+    $servername = "mysql";
+    $username = "root";
+    $password = "toor";
+    $dbname = "site";
+    try {
+        // Підключення до бази даних
+        $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+        // Встановлення режиму помилок на виключення
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Підготовка та виконання SQL-запиту для вибору будинків з бази даних
+        $stmt = $conn->prepare("SELECT * FROM houses LIMIT :numHouses");
+        $stmt->bindParam(':numHouses', $numHouses, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Отримання результатів запиту та повернення їх у вигляді масиву об'єктів House
+        $houses = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $house = new House(
+                $row['image'],
+                $row['name'],
+                $row['description'],
+                $row['price'],
+                $row['address'],
+                $row['realtorName'],
+                $row['realtorImage'],
+                $row['realtorPhone'],
+                $row['bedrooms'],
+                $row['bathrooms']
+            );
+            $houses[] = $house;
+        }
+        return $houses;
+    } catch (PDOException $e) {
+        // Виведення повідомлення про помилку
+        echo "Error: " . $e->getMessage();
+        return []; // Повертаємо пустий масив у випадку помилки
     }
-    return $houses;
 }
 
 $housesToShow = isset($_GET['houses']) ? $_GET['houses'] : 3;
-$houses = generateHouses($housesToShow);
+$houses = getHousesFromDatabase($housesToShow);
 
 foreach ($houses as $index => $house) {
     $house->display($index);
