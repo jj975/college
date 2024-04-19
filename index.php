@@ -71,11 +71,14 @@ class House {
         $this->bathrooms = $bathrooms;
     }
 
-    public function display() {
+    public function display($index) {
 
-        list($discount, $discountedPrice) = $this->calculateDiscount();
+    list($discount, $discountedPrice) = $this->calculateDiscount();
+    
+    
+    $houseId = "house" . $index;
 
-        echo '<div class="max-w-sm w-full py-6 px-3">
+    echo '<div id="' . $houseId . '" class="max-w-sm w-full py-6 px-3">
         <div class="bg-white shadow-xl rounded-lg overflow-hidden">
           <div class="bg-cover bg-center h-56 p-4" style="background-image: url(' . $this->image . ')">
             <div class="flex justify-end">
@@ -179,12 +182,47 @@ $houses = [
         3,
         2
     ),
+        new House(
+        "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+        "Detached house",
+        "5y old",
+        350000,
+        "742 Evergreen Terrace",
+        "Tiffany Heffner",
+        "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
+        "(555) 555-4321",
+        3,
+        2
+    ),
+            new House(
+        "https://images.unsplash.com/photo-1475855581690-80accde3ae2b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80",
+        "Detached house",
+        "5y old",
+        350000,
+        "742 Evergreen Terrace",
+        "Tiffany Heffner",
+        "https://images.unsplash.com/photo-1500522144261-ea64433bbe27?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80",
+        "(555) 555-4321",
+        3,
+        2
+    ),
 ];
 
-foreach ($houses as $house) {
-    $house->display();
+$housesToShow = isset($_GET['houses']) ? $_GET['houses'] : 3;
+$lastHouseIndex = min($housesToShow, count($houses)) - 1;
+$index=0;
+foreach (array_slice($houses, $index, $housesToShow) as $house) {
+    
+    $house->display($index);
+    $index++;
 }
 ?>
+    <div id="houses-list" class="flex justify-center py-5">
+        <!-- Посилання для збільшення кількості показаних будинків -->
+        <a href="?houses=<?php echo $housesToShow + 3; ?>#house<?php echo $lastHouseIndex; ?>" class="bg-green-500 px-8 py-3 rounded-lg text-white">Show more</a>
+    </div>
+
+
 </div>
     <h1 class="text-center uppercase text-black text-4xl font-bold  leading-none tracking-normal">
       Portfolio
@@ -261,9 +299,6 @@ echo generateAboutSection();
 <!--end  About selection -->
 
 <!-- start Form selection -->
-
-
-
 <section class="bg-white -mt-12 py-16">
     <h1 class="text-center uppercase text-black text-4xl font-bold  leading-none tracking-normal">
       Contact Me
