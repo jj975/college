@@ -270,12 +270,12 @@ echo generateAboutSection();
       </svg>
       <span class="h-1 w-24 bg-black rounded-full mx-2"></span>
     </div>
-    <form class="px-6 pb-12 max-w-2xl mx-auto" method="post">
+    <form id="contactForm" class="px-6 pb-12 max-w-2xl mx-auto" method="post" action="#email_input">
       <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
         <input name="name" class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
                type="text" placeholder="Name" aria-label="Name">
       </div>
-      <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+      <div id="email_input" class="flex items-center border-b border-b-2 border-gray-400 py-10">
         <input name="email" class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
                type="email" placeholder="Email Address" aria-label="Email Address">
       </div>
@@ -292,9 +292,15 @@ echo generateAboutSection();
 
       </div>
       <div class="py-5">
-        <button type="submit" class="bg-green-500 px-8 py-5 rounded-lg text-white">Send</button>
+        <button id="sendButton" type="submit" class="bg-green-500 px-8 py-5 rounded-lg text-white">Send</button>
       </div>
 <?php
+// Підключення до бази даних
+$servername = "mysql";
+$username = "root";
+$password = "toor";
+$dbname = "site";
+
 // Клас ContactInformation
 class ContactInformation {
     public $name;
@@ -323,12 +329,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Створення нового об'єкту класу ContactInformation
         $contactInfo = new ContactInformation($name, $email, $phoneNumber, $message);
 
-        // Виведення об'єкту нижче форми
-        echo '<pre>
-            <div class="flex items-center border-b border-b-2 border-gray-400 py-10">';
-        print_r($contactInfo);
-        echo '</pre>
-        </div>';
+        // Збереження даних у базу даних
+        try {
+            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+            // Встановлення режиму помилок на виключення
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Підготовка SQL-запиту для вставки даних
+            $stmt = $conn->prepare("INSERT INTO contacts (name, email, phoneNumber, message) 
+                                    VALUES (:name, :email, :phoneNumber, :message)");
+            // Підстановка значень параметрів
+            $stmt->bindParam(':name', $contactInfo->name);
+            $stmt->bindParam(':email', $contactInfo->email);
+            $stmt->bindParam(':phoneNumber', $contactInfo->phoneNumber);
+            $stmt->bindParam(':message', $contactInfo->message);
+
+            // Виконання запиту
+            $stmt->execute();
+
+            echo '
+              <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+                <label class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none">Thank you!!! We will connect with the author soon.</label>
+              </div>';
+        } catch(PDOException $e) {
+            error_log("Error: " . $e->getMessage());
+            // Виведення повідомлення про помилку на сторінку
+            echo 'Error: '  . $e->getMessage() . '
+              <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
+                <label class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none">Sorry, an error occurred. Please try again later.</label>
+              </div>';
+        }
+        // Закриття підключення
+        $conn = null;
+
     } else {
         echo '
         <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
