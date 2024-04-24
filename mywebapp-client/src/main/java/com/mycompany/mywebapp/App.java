@@ -17,7 +17,9 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
-
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.TextArea;
+import com.google.gwt.user.client.ui.FlowPanel;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
@@ -65,8 +67,58 @@ public class App implements EntryPoint {
 		siteTitle.addStyleName("uppercase text-white text-xl xl:text-3xl font-bold whitespace-no-wrap font-Montserrat leading-normal tracking-tighter");
 		headerPanel.add(siteTitle);
 
+		//task 5.6
+		//label form
+		final Label formLabel = new Label("Subscribe");
+		formLabel.addStyleName("text-center uppercase text-black text-4xl font-bold  leading-none tracking-normal");
+		RootPanel.get("formLabel").add(formLabel);
+		//form 
+		final FormPanel subscriptionForm = new FormPanel();
+		subscriptionForm.addStyleName("px-6 pb-12 max-w-2xl mx-auto");
+		subscriptionForm.setEncoding(FormPanel.ENCODING_MULTIPART);
+        subscriptionForm.setMethod(FormPanel.METHOD_POST);
+
+		//email
+		final FlowPanel emailPanel = new FlowPanel();
+		emailPanel.addStyleName("flex items-center border-b border-b-2 border-gray-400 py-10");
+		final TextBox emailField = new TextBox();
+		emailField.setName("email");
+		emailField.getElement().setAttribute("type", "email");
+		emailField.getElement().setAttribute("aria-label", "Email Address");
+		emailField.getElement().setAttribute("placeholder", "Email Address");
+		emailField.addStyleName("appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none");
+		emailPanel.add(emailField);
+
+		//massege
+		final FlowPanel messagePanel = new FlowPanel();
+		messagePanel.addStyleName("flex items-center border-b border-b-2 border-gray-400 py-10");
+		final TextArea messageField = new TextArea();
+		messageField.setName("message");
+		messageField.getElement().setAttribute("rows", "5");
+		messageField.getElement().setAttribute("placeholder", "Message");
+		messageField.addStyleName("appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none");
+		messagePanel.add(messageField);
+
+		//button
+		final FlowPanel subscriptionButtonPanel = new FlowPanel();
+		subscriptionButtonPanel.addStyleName("py-5");
+		final Button subscriptionButton = new Button("Subscribe");
+		subscriptionButton.getElement().setAttribute("type", "submit");
+		subscriptionButton.addStyleName("bg-green-500 px-8 py-5 rounded-lg text-white");
+		subscriptionButtonPanel.add(subscriptionButton);
+		
+		//all form content
+		final FlowPanel formContentPanel = new FlowPanel();
+		formContentPanel.add(emailPanel);
+		formContentPanel.add(messagePanel);
+		formContentPanel.add(subscriptionButtonPanel);
+		subscriptionForm.add(formContentPanel);
+
+		//add to form
+		RootPanel.get("subscriptionForm").add(subscriptionForm);
 
 
+		//first popup
 		// Focus the cursor on the name field when the app loads
 		nameField.setFocus(true);
 		nameField.selectAll();
@@ -76,7 +128,7 @@ public class App implements EntryPoint {
 		dialogBox.setText("Remote Procedure Call");
 		dialogBox.setAnimationEnabled(true);
 		//task5.4
-		dialogBox.addStyleName("bg-green-500 px-2 py-2 rounded-lg text-white");
+		dialogBox.addStyleName("bg-cyan-500 px-2 py-2 rounded-lg text-white");
 		final Button closeButton = new Button("Close");
 		// We can set the id of a widget by accessing its Element
 		closeButton.getElement().setId("closeButton");
@@ -102,6 +154,8 @@ public class App implements EntryPoint {
 				sendButton.setFocus(true);
 			}
 		});
+
+		
 
 		// Create a handler for the sendButton and nameField
 		class MyHandler implements ClickHandler, KeyUpHandler {
@@ -172,5 +226,113 @@ public class App implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		sendButton.addClickHandler(handler);
 		nameField.addKeyUpHandler(handler);
+
+
+		/////////////////////
+		//* Create the popup dialog box
+		final DialogBox dialogBoxSubscription = new DialogBox();
+		dialogBoxSubscription.setText("Status subscription");
+		dialogBoxSubscription.setAnimationEnabled(true);
+		//task5.4
+		dialogBoxSubscription.addStyleName("bg-green-500 px-2 py-2 rounded-lg text-white");
+		final Button closeButtonSubscription = new Button("Close");
+		// We can set the id of a widget by accessing its Element
+		closeButtonSubscription.getElement().setId("closeButtonSubscription");
+		final Label emailToServerLabel = new Label();
+		final Label massegeToServerLabel = new Label();
+		final HTML serverResponseLabelSubscription = new HTML();
+		VerticalPanel dialogVPanelSubscription = new VerticalPanel();
+		dialogVPanelSubscription.addStyleName("dialogVPanelSubscription");
+		dialogVPanelSubscription.add(new HTML("<b>Sending subscription to the server:</b>"));
+		dialogVPanelSubscription.add(emailToServerLabel);
+		dialogVPanelSubscription.add(massegeToServerLabel);
+		dialogVPanelSubscription.add(new HTML("<br><b>Server replies:</b>"));
+		dialogVPanelSubscription.add(serverResponseLabelSubscription);
+		dialogVPanelSubscription.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+		dialogVPanelSubscription.add(closeButtonSubscription);
+		dialogBoxSubscription.setWidget(dialogVPanelSubscription); //*/
+
+
+		class SubscriptionButtonHandler implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the subscriptionButton.
+			 */
+			public void onClick(ClickEvent event) {
+				sendSubscriptionToServer();
+			}
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					sendSubscriptionToServer();
+				}
+			}
+			private void sendSubscriptionToServer() {
+				errorLabel.setText("");
+				String emailToServer = emailField.getText();
+				String massegeToServer = messageField.getText();
+				//*
+				if (!FieldVerifier.isValidName(emailToServer) && !FieldVerifier.isValidName(massegeToServer)) {
+					errorLabel.setText("Please enter at least four characters");
+					return;
+				}
+				//*/
+				subscriptionButton.setEnabled(false);
+				emailToServerLabel.setText(emailToServer);
+				massegeToServerLabel.setText(massegeToServer);
+				serverResponseLabelSubscription.setText("");
+				/*
+				serverResponseLabelSubscription.setHTML(new SafeHtmlBuilder()
+								.appendHtmlConstant("<br><br>I register subscribe for you ")
+								.appendEscaped(emailToServer)
+								.appendHtmlConstant(".<br><br>And you left a message:<br>")
+								.appendEscaped(massegeToServer)
+								.toSafeHtml());
+				dialogBoxSubscription.center();
+				closeButtonSubscription.setFocus(true);
+								//*/
+				//*
+				greetingService.greetServer(emailToServer,
+						new AsyncCallback<GreetingResponse>() {
+							public void onFailure(Throwable caught) {
+								// Show the RPC error message to the user
+								dialogBoxSubscription
+										.setText("Remote Procedure Call - Failure");
+								serverResponseLabelSubscription
+										.addStyleName("serverResponseLabelSubscriptionError");
+								serverResponseLabelSubscription.setHTML(SERVER_ERROR);
+								dialogBoxSubscription.center();
+								closeButtonSubscription.setFocus(true);
+							}
+
+							public void onSuccess(GreetingResponse result) {
+								dialogBoxSubscription.setText("Remote Procedure Call");
+								serverResponseLabelSubscription.removeStyleName("serverResponseLabelSubscriptionError");
+								serverResponseLabelSubscription.setHTML(new SafeHtmlBuilder()
+								.appendEscaped(result.getGreeting())
+								.appendHtmlConstant("<br><br>I register subscribe for you ")
+								.appendEscaped(emailToServer)
+								.appendHtmlConstant(".<br><br>And you left a message:<br>")
+								.appendEscaped(massegeToServer)
+								.toSafeHtml());
+								dialogBoxSubscription.center();
+								closeButtonSubscription.setFocus(true);
+							}
+						});
+				//*/
+
+			}
+
+		}//*/
+
+		SubscriptionButtonHandler handler2 = new SubscriptionButtonHandler();
+		subscriptionButton.addClickHandler(handler2);
+		messageField.addKeyUpHandler(handler2);
+		closeButtonSubscription.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				dialogBoxSubscription.hide();
+				subscriptionButton.setEnabled(true);
+				subscriptionButton.setFocus(true);
+			}
+		});
+
 	}
 }
