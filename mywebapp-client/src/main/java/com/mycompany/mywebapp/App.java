@@ -20,20 +20,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.FlowPanel;
-
-//*
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
-import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.json.client.JSONArray;
-import com.google.gwt.user.client.rpc.*;
-
-import com.google.gwt.http.client.Request;
-import com.google.gwt.http.client.RequestBuilder;
-import com.google.gwt.http.client.RequestCallback;
-import com.google.gwt.http.client.RequestException;
-import com.google.gwt.http.client.Response;
-//*/
+import com.google.gwt.user.client.ui.Frame;
 
 
 
@@ -351,45 +338,26 @@ public class App implements EntryPoint {
 				subscriptionButton.setFocus(true);
 			}
 		});
-		//*///////////////////
+		//task7.3//////////////////
+		Frame weatherFrame = new Frame("https://www.meteoblue.com/en/weather/widget/daily/rivne_ukraine_695594?geoloc=fixed&days=7&tempunit=CELSIUS&windunit=KILOMETER_PER_HOUR&precipunit=MILLIMETER&coloured=monochrome&pictoicon=0&pictoicon=1&maxtemperature=0&maxtemperature=1&mintemperature=0&mintemperature=1&windspeed=0&windspeed=1&windgust=0&windgust=1&winddirection=0&winddirection=1&uv=0&uv=1&humidity=0&humidity=1&precipitation=0&precipitation=1&precipitationprobability=0&precipitationprobability=1&spot=0&spot=1&pressure=0&pressure=1&layout=dark");
+		final Button getWeatherFrameButton = new Button("Get weather frame");
+		getWeatherFrameButton.addStyleName("bg-green-500 px-2 py-2 rounded-lg text-white ml-4");
+		weatherFrame.addStyleName("bg-cyan-500 px-2 py-2 rounded-lg text-white");
+		RootPanel.get("weatherButton").add(getWeatherFrameButton);
+		
+		class GetWeatherFrameButtonHandler implements ClickHandler {
+			public void onClick(ClickEvent event) {
+				showWeatherFrame();
+			}
+			private void showWeatherFrame() {
+				getWeatherFrameButton.setEnabled(false);
+				RootPanel.get("weatherButton").clear();
+				RootPanel.get("weatherContainer").add(weatherFrame);
+			}
 
-                // Отримання даних з сервера
-        ExchangeRequest.getExchangeRates(new AsyncCallback<String>() {
-            public void onFailure(Throwable caught) {
-                // Відображаємо повідомлення про помилку
-                Label errorLabelAPI = new Label("An error occurred: " + caught.getMessage());
-                RootPanel.get("APIrequest").add(errorLabelAPI);
-            }
-
-            public void onSuccess(String result) {
-                // Розпарсюємо отриманий рядок JSON
-                JSONValue jsonValue = JSONParser.parseStrict(result);
-                JSONArray jsonArray = jsonValue.isArray();
-
-                if (jsonArray != null) {
-                    // Перебираємо елементи масиву
-                    for (int i = 0; i < jsonArray.size(); i++) {
-                        JSONObject jsonObj = jsonArray.get(i).isObject();
-                        if (jsonObj != null) {
-                            // Отримуємо дані про курс валют
-                            String currency = jsonObj.get("ccy").isString().stringValue();
-                            String baseCurrency = jsonObj.get("base_ccy").isString().stringValue();
-                            String buyRate = jsonObj.get("buy").isString().stringValue();
-                            String saleRate = jsonObj.get("sale").isString().stringValue();
-
-                            // Відображаємо дані у вашому аплеті
-                            Label currencyLabel = new Label(currency + "/" + baseCurrency + ": Buy - " + buyRate + ", Sale - " + saleRate);
-                            RootPanel.get("APIrequest").add(currencyLabel);
-                        }
-                    }
-                } else {
-                    // Якщо отриманий рядок JSON не є масивом, відображаємо помилку
-                    Label errorLabelAPI = new Label("Invalid JSON format");
-                    RootPanel.get("APIrequest").add(errorLabelAPI);
-                }
-            }
-        });
-        //*/
+		}
+		GetWeatherFrameButtonHandler getWeatherFrameButtonHandler = new GetWeatherFrameButtonHandler();
+		getWeatherFrameButton.addClickHandler(getWeatherFrameButtonHandler);
 
 
 	}	
