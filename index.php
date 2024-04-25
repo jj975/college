@@ -1,6 +1,9 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="description" content="продаж нерухомості">
+  <meta name="keywords" content="оренда квартири рівне, купити нерухомість, продаж нерухомості">
+  <meta name="author" content="jj975">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -21,7 +24,7 @@
 <main>
   <section class="bg-green-500 py-32 ">
     <figure class="container px-16 pt-12 mx-auto">
-      <img class="mb-12 h-64 mx-auto" src="https://francescomansi.me/img/start-tailwind/avataaars.svg" alt="">
+      <img class="mb-12 h-64 mx-auto" src="https://francescomansi.me/img/start-tailwind/avataaars.svg" alt="Main avatar">
     </figure>
     <h1 class="text-center uppercase text-white text-5xl lg:text-6xl font-bold  leading-none tracking-normal">
       Start
@@ -214,24 +217,25 @@ $lastHouseIndex = min($housesToShow, count($houses)) - 1;
       <span class="h-1 w-24 bg-black rounded-full mx-2"></span>
     </div>
     <div class="flex flex-col sm:flex-row sm:flex-wrap px-6 max-w-md md:max-w-6xl mx-auto">
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4 rounded-lg">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/cabin.png">
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/cake.png">
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/circus.png">
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/game.png">
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/safe.png">
-      </div>
-      <div class="w-full sm:w-1/2 md:w-1/3 p-4">
-        <img alt="" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/submarine.png">
-      </div>
+    <div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Cabin" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/cabin.png">
+</div>
+<div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Cake" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/cake.png">
+</div>
+<div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Circus" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/circus.png">
+</div>
+<div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Game" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/game.png">
+</div>
+<div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Safe" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/safe.png">
+</div>
+<div class="w-full sm:w-1/2 md:w-1/3 p-4">
+    <img alt="Submarine" class="rounded-lg" src="https://francescomansi.me/img/start-tailwind/portfolio/submarine.png">
+</div>
+
     </div>
   </section>
 <!-- end Content selection -->
