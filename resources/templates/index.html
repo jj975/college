@@ -295,27 +295,28 @@
                 </svg>
                 <span class="h-1 w-24 bg-black rounded-full mx-2"></span>
             </div>
-            <form class="px-6 pb-12 max-w-2xl mx-auto">
+            <form class="px-6 pb-12 max-w-2xl mx-auto" action="#" th:action="@{/results}" method="post"
+                th:object="${contactForm}">
                 <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
                     <input
                         class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-                        type="text" placeholder="Name" aria-label="Name">
+                        type="text" placeholder="Name" aria-label="Name" th:field="*{name}">
                 </div>
                 <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
                     <input
                         class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-                        type="text" placeholder="Email Address" aria-label="Email Address">
+                        type="text" placeholder="Email Address" aria-label="Email Address" th:field="*{email}">
                 </div>
                 <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
                     <input
                         class="appearance-none bg-transparent border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-                        type="text" placeholder="Phone Number" aria-label="Phone Number">
+                        type="text" placeholder="Phone Number" aria-label="Phone Number" th:field="*{phone}">
                 </div>
                 <div class="flex items-center border-b border-b-2 border-gray-400 py-10">
                     <label>
                         <textarea
                             class="appearance-none border-none w-full placeholder-gray-700 mr-3 py-1 leading-tight text-2xl focus:outline-none"
-                            rows="5" placeholder="Message"></textarea>
+                            rows="5" placeholder="Message" th:field="*{message}"></textarea>
                     </label>
 
                 </div>
@@ -323,6 +324,7 @@
                     <button class="bg-green-500 px-8 py-5 rounded-lg text-white">Send</button>
                 </div>
             </form>
+
         </section>
         <section class="bg-gray-800 -mt-12 py-16">
             <div class="flex flex-col md:flex-row text-white text-center">
