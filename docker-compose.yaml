@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: jj975/php-apache
+    container_name: php_apache
+    ports:
+      - "80:80"
+    networks:
+      - FullStack
+    volumes:
+      - ./website:/var/www/html
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: site_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: resu
+    networks:
+      - FullStack
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      #PMA_USER: user
+      #PMA_PASSWORD: resu
+    ports:
+      - "81:80"
+    networks:
+      - FullStack
+
+networks:
+  FullStack:
+    driver: bridge
